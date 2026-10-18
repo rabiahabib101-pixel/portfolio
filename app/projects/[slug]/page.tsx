@@ -1,0 +1,8 @@
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { projects } from '@/lib/site';
+import { Header } from '@/components/header';
+export const dynamicParams = false;
+export function generateStaticParams() { return projects.map(p => ({ slug: p.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const { slug } = await params; const p = projects.find(p => p.slug === slug); return { title: p?.label, description: p?.short, alternates: { canonical: `/projects/${slug}` } }; }
+export default async function Project({ params }: { params: Promise<{ slug: string }> }) { const { slug } = await params; const p = projects.find(p => p.slug === slug); if (!p) notFound(); return <><Header /><main className="wrap case-study"><a className="text-link" href="/#work">← All selected work</a><p className="eyebrow">{p.category}</p><h1>{p.title}</h1><p className="case-intro">{p.short}</p><div className="tags">{p.stack.map(t => <span key={t}>{t}</span>)}</div><div className={`case-flow ${p.color}`}>{p.flow.map((step, i) => <div key={step}><span>0{i + 1}</span><h2>{step}</h2></div>)}</div><div className="case-body"><aside><p className="eyebrow">PROJECT OVERVIEW</p><p>Client application</p><p>Role: AI engineer & software developer</p></aside><div><h2>The problem</h2><p>{p.problem}</p><h2>The approach</h2><p>{p.approach}</p><h2>The outcome</h2><p>{p.result}</p></div></div><div className="case-contact"><h2>Exploring a similar challenge?</h2><a className="button dark" href="mailto:rabiahabib101@gmail.com">Let’s talk ↗</a></div></main></>; }

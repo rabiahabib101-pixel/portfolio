@@ -1,0 +1,1 @@
+export default function NotFound() { return <main className="wrap case-study"><p className="eyebrow">404 / PAGE NOT FOUND</p><h1>A little off course.</h1><p>This page could not be found.</p><a className="button dark" href="/">Back to portfolio ↗</a></main>; }
